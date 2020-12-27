@@ -16,5 +16,6 @@ variable
 
 ## To Do
 - Imporve code encapsluation to hide hashing details
+- Responsive CSS
 
 
