@@ -1,0 +1,132 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script></head>
+    <meta credit=http://www.md5.cz/>
+
+</head>
+
+
+	<body>
+
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+
+		<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+		<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+
+		<script>
+		  	// Your web app's Firebase configuration
+		  	// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+			var imported = document.createElement('script');
+			imported.src = '/auth.js';
+			document.head.appendChild(imported);
+		</script>
+
+
+		<!--disable right click-->
+		<script>
+			document.addEventListener("contextmenu", function(e){
+			  e.preventDefault();
+			}, false);
+		</script>
+
+		<!--disable inspect shortcuts-->
+		<script>
+		document.addEventListener("keydown", function(e){
+		  // USE THIS TO DISABLE CONTROL AND ALL FUNCTION KEYS
+		  // if (e.ctrlKey || (e.keyCode>=112 && e.keyCode<=123)) {
+		  // THIS WILL ONLY DISABLE CONTROL AND F12
+		  if ((e.ctrlKey || e.keyCode==123) ) {
+		    e.stopPropagation();
+		    e.preventDefault();
+		  }
+		});
+		</script>
+
+
+
+		<script type="text/javascript">
+
+		    window.onload = function () {
+		        var btn = document.getElementById("btn");
+		        if (btn.addEventListener) {
+		            btn.addEventListener("click", btnClick, false);
+		        } else if (btn.attachEvent) {
+		            btn.attachEvent("onclick", btnClick);
+		        }
+
+				var text = document.getElementById("what");
+				text.addEventListener("keydown", function (e) {
+				    if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+				        btnClick(e);
+				    }
+				});
+
+		        var allCookies = document.cookie.split(';'); 
+                
+                // The "expire" attribute of every cookie is  
+                // Set to "Thu, 01 Jan 1970 00:00:00 GMT" 
+                for (var i = 0; i < allCookies.length; i++) 
+                    document.cookie = allCookies[i] + "=;expires=" 
+                    + new Date(0).toUTCString(); 
+
+		    };
+
+
+
+		    function btnClick() {
+
+		       	var i
+		       	var alphabet = []
+		       	for (i=33; i< 127; i++){
+		       		alphabet.push(String.fromCharCode(i));
+		    		}
+
+		    	var word = document.getElementById("what").value;
+		    	var word_hashed = CryptoJS.MD5(word).toString()
+		    	var word_hashed_list = word_hashed.split('')
+
+		    	var new_pwd = []
+		    	for(i=0; i<16; i++){
+		    		var new_char = (word_hashed_list[i].charCodeAt() * word_hashed_list[i+16].charCodeAt())  % alphabet.length
+		    		new_pwd.push(alphabet[new_char])
+		    		console.log(i, alphabet[new_char])
+		    	}
+
+		    	document.getElementById("checksum").value = new_pwd.join("");
+		    	document.getElementById("checksum").innerHTML = new_pwd.join("");
+		       	}
+		</script>
+
+
+		<script>
+			function copyPassword(){
+				var copyText = document.getElementById("checksum");
+				copyText.select();
+				copyText.setSelectionRange(0, 99999)
+				document.execCommand("copy");
+			}
+		</script>
+
+		<h1>Password Generator</h1>
+		<h2>Create your password from your keyword</h2>
+		<input type="text" id="what" class="what" size="100" name="what" value="" autocomplete="off"> </br></br>
+		<input type="submit" id='btn' value="HASH"></br></br>
+
+		<p> Your Password (click to copy) </p>
+		<p class=checksum>
+ 			<input type="text" id="checksum" name="checksum" onclick="copyPassword()" onfocus="this.select()" readonly="readonly" value="--"></br>
+ 		</p>
+
+
+
+	</body>
+
+
+</html>
+
