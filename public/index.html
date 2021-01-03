@@ -87,15 +87,22 @@
 		       		alphabet.push(String.fromCharCode(i));
 		    		}
 
+		    	var j
+		    	for(j=0; j<=1; j++){
+		    		for (i=0; i<=9; i++){
+		    			alphabet.push((i.toString()));
+		    		}
+		    	}
+		    	console.log(alphabet)
 		    	var word = document.getElementById("what").value;
 		    	var word_hashed = CryptoJS.MD5(word).toString()
 		    	var word_hashed_list = word_hashed.split('')
 
 		    	var new_pwd = []
 		    	for(i=0; i<16; i++){
-		    		var new_char = (word_hashed_list[i].charCodeAt() * word_hashed_list[i+16].charCodeAt())  % alphabet.length
+		    		var new_char = Math.pow(word_hashed_list[i].charCodeAt(), word_hashed_list[i+16].charCodeAt())  % alphabet.length
 		    		new_pwd.push(alphabet[new_char])
-		    		console.log(i, alphabet[new_char])
+		    		console.log(i, alphabet[new_char], new_char)
 		    	}
 
 		    	document.getElementById("checksum").value = new_pwd.join("");
@@ -113,15 +120,27 @@
 			}
 		</script>
 
-		<h1>Password Generator</h1>
-		<h2>Create your password from your keyword</h2>
-		<input type="text" id="what" class="what" size="100" name="what" value="" autocomplete="off"> </br></br>
-		<input type="submit" id='btn' value="HASH"></br></br>
+			<h1>Password Generator</h1>
+			<h2>Create password from keyword</h2>
 
-		<p> Your Password (click to copy) </p>
-		<p class=checksum>
- 			<input type="text" id="checksum" name="checksum" onclick="copyPassword()" onfocus="this.select()" readonly="readonly" value="--"></br>
- 		</p>
+			<p class=what>
+				<input type="text" id="what" class="what" size="100" name="what" value="" autocomplete="off">
+			</p>
+
+
+			<p>
+				<input type="submit" id='btn' value="HASH">
+			</p>
+
+
+			<p> 
+				Your Password (click to copy) 
+			</p>
+
+
+			<p class=checksum>
+	 			<input type="text" id="checksum" name="checksum" onclick="copyPassword()" onfocus="this.select()" readonly="readonly" value="--"></br>
+	 		</p>
 
 
 
